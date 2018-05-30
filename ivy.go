@@ -18,19 +18,16 @@ var (
 )
 
 func main() {
-	q := js.NewEventCallback(false, false, false, cbQuit)
-	defer q.Close()
 
 	ivy := js.NewEventCallback(false, false, false, cbRunIvy)
 	defer ivy.Close()
 
 	window := browser.GetWindow()
-	window.Document.GetElementById("runButton").SetAttribute("disabled", true)
-	window.Document.GetElementById("quit").AddEventListener(browser.EventClick, q)
-	window.Document.GetElementById("quit").SetProperty("disabled", false)
 
-	window.Document.GetElementById("ivy").AddEventListener(browser.EventClick, ivy)
-	window.Document.GetElementById("ivy").SetProperty("disabled", false)
+	window.Document.GetElementById("expression").AddEventListener(browser.EventKeyUp, ivy)
+	f := window.Document.GetElementById("expression")
+	window.Document.GetElementById("loadspinner").SetAttribute("class", "")
+	f.Focus()
 
 	// TODO: Pull the values from the UI
 	conf.SetFormat("")
@@ -44,33 +41,26 @@ func main() {
 	keepalive()
 }
 
-func cb(args []js.Value) {
-	println("callback")
-}
-
-func cbQuit(e js.Value) {
-	println("got Quit event callback!")
-	window := browser.GetWindow()
-	window.Document.GetElementById("runButton").SetProperty("disabled", false)
-	window.Document.GetElementById("quit").SetAttribute("disabled", true)
-	window.Document.GetElementById("ivy").SetAttribute("disabled", true)
-	signal <- 0
-}
-
 func cbRunIvy(e js.Value) {
 
 	println("running Ivy")
 	window := browser.GetWindow()
-	expr := window.Document.GetElementById("expression").Value()
-	res, err := mobile.Eval(expr)
+	if e.Get("keyCode").Int() == 13 {
 
-	if err != nil {
-		window.Console.Warn(err.Error())
-		return
+		expr := window.Document.GetElementById("expression").Value()
+		res, err := mobile.Eval(expr)
+
+		if err != nil {
+			window.Console.Warn(err.Error())
+			return
+		}
+		element := window.Document.GetElementById("ivy-out")
+		a := element.InnerHTML()
+		element.SetInnerHTML(a + "> " + expr + "<br/>" + res + "<br/>")
+		f := window.Document.GetElementById("expression")
+		f.SetValue("")
+		window.ScrollTo(0, window.InnerHeight())
 	}
-	element := window.Document.GetElementById("ivy-out")
-	element.InnerHTML(res)
-
 }
 
 func keepalive() {

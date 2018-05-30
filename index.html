@@ -10,6 +10,7 @@ license that can be found in the LICENSE file.
     <title>Go WASM</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-light_blue.min.css" />
@@ -27,7 +28,8 @@ license that can be found in the LICENSE file.
         WebAssembly.instantiateStreaming(fetch("ivy.wasm", {credentials: 'include'}), go.importObject).then((result) => {
             mod = result.module;
             inst = result.instance;
-            document.getElementById("runButton").disabled = false;
+            //document.getElementById("runButton").disabled = false;
+            run()
         });
         async function run() {
             console.clear();
@@ -42,25 +44,49 @@ license that can be found in the LICENSE file.
       .word-break {
         word-break: break-all;
       }
+
+      #bottom {
+        position: absolute;
+        bottom: 0;
+      }
+
+      #hide {
+        display: none;
+      }
     </style>
 </head>
 
 <body>
+    <div class="mdl-grid mdl-js-layout mdl-layout--fixed-header">
+	<header class="mdl-layout__header">
+	  <div class="mdl-layout__header-row">
+	    <!-- Title -->
+	    <span class="mdl-layout-title">Ivy</span>
+	    <!-- Add spacer, to align navigation to the right -->
+	    <div class="mdl-layout-spacer"></div>
+	    <!-- Navigation. We hide it in small screens. -->
+	    <nav class="mdl-navigation mdl-layout--large-screen-only">
+	      <a class="mdl-navigation__link" href="">Clear</a>
+	    </nav>
+	  </div>
+	</header>
+	<div class="mdl-layout__drawer">
+	  <span class="mdl-layout-title">Ivy</span>
+	  <nav class="mdl-navigation">
+	    <a class="mdl-navigation__link" href="">Demo</a>
+	    <a class="mdl-navigation__link" href="">About</a>
+	    <a class="mdl-navigation__link" href="">Help</a>
+	  </nav>
+	</div>
 
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick="run();" id="runButton" disabled>Run WASM Module</button>
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="quit" disabled>Quit WASM Module</button>
-    <hr>
-      <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" type="text" id="expression" value="">
-          <label class="mdl-textfield__label" for="expression">Ivy Expression...</label>
-      </div>
-      <div>
-          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="ivy" disabled>Calculate</button>
-      </div>
-      <p id="ivy-out" class="word-break">
-      </p>
-    <img src="ivy.jpg">
-
+        <main class="mdl-layout__content">
+          <p id="ivy-out" class="word-break"> </p>
+         <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield bottom">
+              <input class="mdl-textfield__input" type="text" id="expression" value="">
+              <label class="mdl-textfield__label" for="expression">type an expression</label>
+          </div>
+          <div id="loadspinner" class="mdl-spinner mdl-js-spinner is-active"></div>
+        </main>
 </body>
 
 </html>
