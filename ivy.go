@@ -24,7 +24,13 @@ func main() {
 	ivy := js.NewEventCallback(false, false, false, cbRunIvy)
 	defer ivy.Close()
 
+	clear := js.NewEventCallback(false, false, false, cbClear)
+	defer clear.Close()
+
 	window := browser.GetWindow()
+
+	button := window.Document.GetElementById("clear")
+	button.AddEventListener(browser.EventClick, clear)
 
 	express := window.Document.GetElementById("expression")
 	express.AddEventListener(browser.EventKeyUp, ivy)
@@ -40,6 +46,16 @@ func main() {
 	context = exec.NewContext(&conf)
 
 	keepalive()
+}
+
+func cbClear(e js.Value) {
+
+	window := browser.GetWindow()
+	element := window.Document.GetElementById("ivy-out")
+	element.SetInnerHTML("")
+	express := window.Document.GetElementById("expression")
+	express.Focus()
+
 }
 
 func cbRunIvy(e js.Value) {
