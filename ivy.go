@@ -24,10 +24,10 @@ func main() {
 
 	window := browser.GetWindow()
 
-	window.Document.GetElementById("expression").AddEventListener(browser.EventKeyUp, ivy)
-	f := window.Document.GetElementById("expression")
+	express := window.Document.GetElementById("expression")
+	express.AddEventListener(browser.EventKeyUp, ivy)
 	window.Document.GetElementById("loadspinner").SetAttribute("class", "")
-	f.Focus()
+	express.Focus()
 
 	// TODO: Pull the values from the UI
 	conf.SetFormat("")
@@ -43,11 +43,11 @@ func main() {
 
 func cbRunIvy(e js.Value) {
 
-	println("running Ivy")
 	window := browser.GetWindow()
 	if e.Get("keyCode").Int() == 13 {
 
-		expr := window.Document.GetElementById("expression").Value()
+		express := window.Document.GetElementById("expression")
+		expr := express.Value()
 		res, err := mobile.Eval(expr)
 
 		if err != nil {
@@ -55,10 +55,9 @@ func cbRunIvy(e js.Value) {
 			return
 		}
 		element := window.Document.GetElementById("ivy-out")
-		a := element.InnerHTML()
-		element.SetInnerHTML(a + "> " + expr + "<br/>" + res + "<br/>")
-		f := window.Document.GetElementById("expression")
-		f.SetValue("")
+		content := element.InnerHTML()
+		element.SetInnerHTML(content + "> " + expr + "<br/>" + res + "<br/>")
+		express.SetValue("")
 		window.ScrollTo(0, window.InnerHeight())
 	}
 }
