@@ -53,6 +53,7 @@ func cbQuit(e js.Value) {
 	window := browser.GetWindow()
 	window.Document.GetElementById("runButton").SetProperty("disabled", false)
 	window.Document.GetElementById("quit").SetAttribute("disabled", true)
+	window.Document.GetElementById("ivy").SetAttribute("disabled", true)
 	signal <- 0
 }
 
@@ -80,11 +81,4 @@ func keepalive() {
 			break
 		}
 	}
-	// select {} also seems to work but the following doesn't:
-	// select {
-	//    case m <-signal:
-	//       // do something
-	//    default:
-	//       // wait
-	// }
 }

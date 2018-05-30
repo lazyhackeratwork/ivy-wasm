@@ -24,7 +24,7 @@ license that can be found in the LICENSE file.
         }
         const go = new Go();
         let mod, inst;
-        WebAssembly.instantiateStreaming(fetch("test.wasm", {credentials: 'include'}), go.importObject).then((result) => {
+        WebAssembly.instantiateStreaming(fetch("ivy.wasm", {credentials: 'include'}), go.importObject).then((result) => {
             mod = result.module;
             inst = result.instance;
             document.getElementById("runButton").disabled = false;
@@ -48,8 +48,8 @@ license that can be found in the LICENSE file.
 <body>
 
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick="run();" id="runButton" disabled>Run WASM Module</button>
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick="alert('button pushed')">Browser Alert</button>
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="quit" disabled>Quit WASM Module</button>
+    <hr>
       <div class="mdl-textfield mdl-js-textfield">
           <input class="mdl-textfield__input" type="text" id="expression" value="">
           <label class="mdl-textfield__label" for="expression">Ivy Expression...</label>
