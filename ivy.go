@@ -1,3 +1,5 @@
+// Ivy is a APL-like calculator written by Rob Pike.  This brings it over to
+// webassembly.
 package main
 
 import (
