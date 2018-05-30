@@ -29,7 +29,6 @@ func main() {
 	window.Document.GetElementById("loadspinner").SetAttribute("class", "")
 	express.Focus()
 
-	// TODO: Pull the values from the UI
 	conf.SetFormat("")
 	conf.SetMaxBits(1e9)
 	conf.SetMaxDigits(1e4)
@@ -45,15 +44,15 @@ func cbRunIvy(e js.Value) {
 
 	window := browser.GetWindow()
 	if e.Get("keyCode").Int() == 13 {
-
 		express := window.Document.GetElementById("expression")
+
 		expr := express.Value()
 		res, err := mobile.Eval(expr)
-
 		if err != nil {
 			window.Console.Warn(err.Error())
 			return
 		}
+
 		element := window.Document.GetElementById("ivy-out")
 		content := element.InnerHTML()
 		element.SetInnerHTML(content + "> " + expr + "<br/>" + res + "<br/>")
