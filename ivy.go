@@ -51,6 +51,7 @@ func main() {
 func cbClear(e js.Value) {
 
 	window := browser.GetWindow()
+
 	element := window.Document.GetElementById("ivy-out")
 	element.SetInnerHTML("")
 	express := window.Document.GetElementById("expression")
@@ -75,6 +76,7 @@ func cbRunIvy(e js.Value) {
 		content := element.InnerHTML()
 		element.SetInnerHTML(content + "> " + expr + "<br/>" + res + "<br/>")
 		express.SetValue("")
+
 		window.ScrollTo(0, window.InnerHeight())
 	}
 }
