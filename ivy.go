@@ -20,10 +20,10 @@ var (
 
 func main() {
 
-	ivy := js.NewEventCallback(false, false, false, cbRunIvy)
+	ivy := js.NewEventCallback(js.StopImmediatePropagation, cbRunIvy)
 	defer ivy.Close()
 
-	clear := js.NewEventCallback(false, false, false, cbClear)
+	clear := js.NewEventCallback(js.StopImmediatePropagation, cbClear)
 	defer clear.Close()
 
 	window := browser.GetWindow()
